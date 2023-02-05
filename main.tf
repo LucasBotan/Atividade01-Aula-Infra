@@ -1,3 +1,22 @@
+
+/*
+Atividade 01
+Subir uma máquina virtual no Azure, AWS ou GCP instalando o Apache2/nginx e que esteja acessível no host da máquina na porta 80, usando Terraform.
+Enviar a URL GitHub do código.
+O código enviado deve satisfazer exatamente o que foi pedido no enunciado, caso haja código faltando ou sobrando terá desconto de nota. 
+Atividade pode ser feita em grupo ou individual.
+
+Turma: FS05
+
+Integrantes:
+Silvia Cristina de Oliveira Teixeira
+Guilherme Henrique Taira
+Aldenir Rodrigues Almeida
+Jessica Roza da Silva
+Lucas Marques Botan
+*/
+
+
 terraform {
   required_providers {
     azurerm = {
