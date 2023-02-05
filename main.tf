@@ -34,7 +34,7 @@ resource "azurerm_virtual_network" "vnet-exercicio-infra" {
 resource "azurerm_subnet" "sub-exercicio-infra" {
   name                 = "sub-exercicio-infra"
   resource_group_name  = azurerm_resource_group.rg-exercicio-infra.name
-  virtual_network_name = azurerm_virtual_network.rg-exercicio-infra.name
+  virtual_network_name = azurerm_virtual_network.vnet-exercicio-infra.name
   address_prefixes     = ["10.0.1.0/24"]
 }
 
@@ -99,7 +99,7 @@ resource "azurerm_network_interface" "nic-exercicio-infra" {
     name                          = "nic-internal"
     subnet_id                     = azurerm_subnet.sub-exercicio-infra.id
     private_ip_address_allocation = "Dynamic"
-    #public_ip_address_id = azurerm_public_ip.ip-exercicio-infra.id
+    public_ip_address_id          = azurerm_public_ip.ip-exercicio-infra.id
   }
 }
 
@@ -130,8 +130,8 @@ resource "azurerm_virtual_machine" "vm-exercicio-infra" {
   }
   os_profile {
     computer_name  = "hostname"
-    admin_username = "admim"
-    admin_password = "admin"
+    admin_username = "admim123"
+    admin_password = "password@123"
   }
   os_profile_linux_config {
     disable_password_authentication = false
@@ -145,12 +145,17 @@ resource "azurerm_virtual_machine" "vm-exercicio-infra" {
 
 #VERIFICAR SE PODE INSTALAR SÓ O APACHE OU É PRECISO O APACHE + NGINX
 resource "null_resource" "install-apache" {
+
+  triggers = {
+    order=azurerm_virtual_machine.vm-exercicio-infra.id
+  }
+
   provisioner "remote-exec" {
     connection {
       type     = "ssh"
-      host     = azurerm_public_ip.ip-exercicio-infra.ip_adress
-      user     = "admin"
-      password = "admin"
+      host     = azurerm_public_ip.ip-exercicio-infra.ip_address
+      user     = "admim123"
+      password = "password@123"
     }
     inline = [
       "sudo apt update",
